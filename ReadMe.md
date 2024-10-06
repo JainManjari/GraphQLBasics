@@ -55,4 +55,13 @@ To find book by id
     name
   }
 }
+
+
+To add a book
+mutation {
+  addBook(name:"Harry Potter And the Order of Pheonix", authorId:1) {
+    name,
+    id
+  }
+}
 ```
