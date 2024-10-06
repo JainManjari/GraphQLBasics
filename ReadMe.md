@@ -23,4 +23,17 @@ query {
     name
   }
 }
+
+
+
+{
+  books {
+    id,
+    name,
+    author {
+      name,
+      id
+    }
+  }
+}
 ```
