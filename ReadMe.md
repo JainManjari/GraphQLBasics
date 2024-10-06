@@ -47,4 +47,12 @@ query {
     }
   }
 }
+
+
+To find book by id
+{
+  book(id:1) {
+    name
+  }
+}
 ```

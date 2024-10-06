@@ -49,8 +49,8 @@ const AuthorType = new GraphQLObjectType({
     books: {
       // books is not a field in books schema
       type: new GraphQLList(BookType),
-      resolve: (author) => {
-        return books.filter((book) => book.authorId === author.id);
+      resolve: (parent = author) => {
+        return books.filter((book) => book.authorId === parent.id);
       },
     },
   }),
@@ -66,8 +66,8 @@ const BookType = new GraphQLObjectType({
     author: {
       // author is not a field in books schema
       type: AuthorType,
-      resolve: (book) => {
-        return authors.find((author) => author.id === book.authorId);
+      resolve: (parent = book) => {
+        return authors.find((author) => author.id === parent.authorId);
       },
     },
   }),
@@ -77,6 +77,16 @@ const RootQueryType = new GraphQLObjectType({
   name: "Query",
   description: "Root Query",
   fields: () => ({
+    book: {
+      type: BookType,
+      description: "A Single Book",
+      args: {
+        id: { type: GraphQLInt },
+      },
+      resolve: (parent, args) => {
+        return books.find((book) => book.id === args.id);
+      },
+    },
     books: {
       type: new GraphQLList(BookType),
       description: "List of books",
