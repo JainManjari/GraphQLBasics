@@ -11,13 +11,13 @@ const {
 } = require("graphql");
 const app = express();
 
-const authors = [
+let authors = [
   { id: 1, name: "JK Rowling" },
   { id: 2, name: "J R R Tolkein" },
   { id: 3, name: "Brent Weeks" },
 ];
 
-const books = [
+let books = [
   { id: 1, name: "Harry Potter and Chamber of Secrets", authorId: 1 },
   { id: 2, name: "Harry Potter and Prisoner of Azkaban", authorId: 1 },
   { id: 3, name: "Harry Potter and Globet of Fire", authorId: 1 },
@@ -143,6 +143,34 @@ const RootMutationType = new GraphQLObjectType({
         return author;
       },
     },
+    updateBook: {
+      type: new GraphQLList(BookType),
+      description: "Updating a book by id",
+      args: {
+        id: { type: GraphQLNonNull(GraphQLInt) },
+        name: { type: GraphQLNonNull(GraphQLString) },
+      },
+      resolve: (parent, args) => {
+        books.filter((book) => {
+          if (book.id === args.id) {
+            book.name = args.name;
+          }
+        });
+        return books;
+      },
+    },
+    deleteBook: {
+      type: new GraphQLList(BookType),
+      description: "Deleting a book by id",
+      args: {
+        id: { type: GraphQLNonNull(GraphQLInt) },
+      },
+      resolve: (parent, args) => {
+        const deletedBook = books.filter((book) => book.id === args.id);
+        books = books.filter((book) => book.id !== args.id);
+        return books;
+      },
+    },
   }),
 });
 
@@ -150,7 +178,6 @@ const schema = new GraphQLSchema({
   query: RootQueryType,
   mutation: RootMutationType,
 });
-
 
 //middleware
 app.use(
