@@ -36,4 +36,15 @@ query {
     }
   }
 }
+
+
+{
+  authors {
+    id,
+    books {
+      id,
+      name
+    }
+  }
+}
 ```
