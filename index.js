@@ -131,6 +131,18 @@ const RootMutationType = new GraphQLObjectType({
         return book;
       },
     },
+    addAuhor: {
+      type: AuthorType, // return type
+      description: "Add author",
+      args: {
+        name: { type: GraphQLNonNull(GraphQLString) },
+      },
+      resolve: (parent, args) => {
+        const author = { id: authors.length + 1, name: args.name };
+        authors.push(author);
+        return author;
+      },
+    },
   }),
 });
 
@@ -139,6 +151,8 @@ const schema = new GraphQLSchema({
   mutation: RootMutationType,
 });
 
+
+//middleware
 app.use(
   "/graphql",
   expressGraphQL({
