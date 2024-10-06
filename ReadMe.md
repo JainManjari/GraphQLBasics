@@ -14,4 +14,13 @@ npm i --save-dev nodemon
 query {
   message
 }
+
+
+
+{
+  books {
+    authorId,
+    name
+  }
+}
 ```
